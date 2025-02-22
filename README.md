@@ -2,6 +2,13 @@
 
 A Model Context Protocol (MCP) server implementation for Dart, providing task management, document handling, and workspace organization capabilities through MCP tools.
 
+## Prerequisites
+
+- Node.js 16.x or higher
+- Python 3.8 or higher
+- Dart Python SDK installed (`pip install dart-sdk`)
+- A valid Dart API token
+
 ## Features
 
 - Task Management
@@ -23,32 +30,54 @@ A Model Context Protocol (MCP) server implementation for Dart, providing task ma
 
 ## Installation
 
+1. Clone the repository:
 ```bash
-# Install dependencies
-npm install
+git clone https://github.com/jmanhype/dart-mcp-server.git
+cd dart-mcp-server
+```
 
-# Set up Python environment (required for Dart SDK)
+2. Install Node.js dependencies:
+```bash
+npm install
+```
+
+3. Set up Python environment and install Dart SDK:
+```bash
+# Create and activate virtual environment
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install dart-sdk
 
-# Set up environment variables
+# Install Dart SDK
+pip install dart-sdk
+```
+
+4. Set up environment variables:
+```bash
+# Copy example environment file
 cp .env.example .env
-# Edit .env with your DART_TOKEN
+
+# Edit .env with your configuration
+# Required: DART_TOKEN
+# Optional: PYTHONPATH (path to dart sdk)
 ```
 
 ## Usage
 
+1. Build the TypeScript code:
 ```bash
-# Start the MCP server
+npm run build
+```
+
+2. Start the MCP server:
+```bash
 npm start
 ```
 
 ## Development
 
 ```bash
-# Install development dependencies
-npm install --save-dev
+# Watch for TypeScript changes
+npm run dev
 
 # Run tests
 npm test
@@ -59,8 +88,14 @@ npm test
 Create a `.env` file with the following variables:
 
 ```env
+# Required: Your Dart API token
 DART_TOKEN=your_dart_token_here
-PYTHONPATH=/path/to/dart/sdk  # Optional: if needed
+
+# Optional: Path to your Dart SDK installation
+PYTHONPATH=/path/to/dart/sdk
+
+# Optional: Python executable path (defaults to system Python)
+PYTHON_PATH=/path/to/python
 ```
 
 ## Available MCP Tools
@@ -75,6 +110,27 @@ PYTHONPATH=/path/to/dart/sdk  # Optional: if needed
 - `create_doc`: Create new documents or reports
 - `create_space`: Create new workspaces
 - `delete_space`: Delete existing workspaces
+
+## Troubleshooting
+
+If you encounter issues:
+
+1. Verify Python environment:
+   ```bash
+   python --version
+   pip list | grep dart
+   ```
+
+2. Check Dart SDK installation:
+   ```python
+   python -c "import dart; print(dart.__version__)"
+   ```
+
+3. Verify environment variables:
+   ```bash
+   echo $DART_TOKEN
+   echo $PYTHONPATH
+   ```
 
 ## License
 

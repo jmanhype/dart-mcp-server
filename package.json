@@ -8,7 +8,9 @@
     "start": "node build/index.js",
     "test": "node build/test.js",
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "postinstall": "python -m venv .venv && . .venv/bin/activate && pip install dart-sdk",
+    "prepare": "npm run build"
   },
   "keywords": [
     "dart",
@@ -25,5 +27,9 @@
   },
   "devDependencies": {
     "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "python": ">=3.8.0"
   }
 }
