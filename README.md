@@ -1,5 +1,7 @@
 # Dart MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@jmanhype/dart-mcp-server)](https://smithery.ai/server/@jmanhype/dart-mcp-server)
+
 A Model Context Protocol (MCP) server implementation for Dart, providing task management, document handling, and workspace organization capabilities through MCP tools.
 
 ## Prerequisites
@@ -30,6 +32,15 @@ A Model Context Protocol (MCP) server implementation for Dart, providing task ma
 
 ## Installation
 
+### Installing via Smithery
+
+To install Dart MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@jmanhype/dart-mcp-server):
+
+```bash
+npx -y @smithery/cli install @jmanhype/dart-mcp-server --client claude
+```
+
+### Manual Installation
 1. Clone the repository:
 ```bash
 git clone https://github.com/jmanhype/dart-mcp-server.git
