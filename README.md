@@ -4,6 +4,10 @@
 
 A Model Context Protocol (MCP) server implementation for Dart, providing task management, document handling, and workspace organization capabilities through MCP tools.
 
+<a href="https://glama.ai/mcp/servers/2pdqgspm4q">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/2pdqgspm4q/badge" alt="Dart Server MCP server" />
+</a>
+
 ## Prerequisites
 
 - Node.js 16.x or higher
