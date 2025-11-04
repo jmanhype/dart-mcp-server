@@ -2,16 +2,29 @@
 
 import { config } from 'dotenv';
 import { resolve } from 'path';
+import { homedir } from 'os';
 
-// Load environment variables from /Users/speed/dart-tools/.env
-config({ path: '/Users/speed/dart-tools/.env' });
+// Load environment variables from .env file
+config();
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { spawn } from 'child_process';
+import { spawn, ChildProcess } from 'child_process';
 
+/**
+ * Interface for Dart tool arguments
+ */
+interface ToolArguments {
+    [key: string]: any;
+}
+
+/**
+ * Main server class for Dart MCP integration
+ */
 class DartServer {
+    private server: Server;
+
     constructor() {
         this.server = new Server({
             name: 'dart-server',
@@ -36,7 +49,11 @@ class DartServer {
         this.checkPythonEnvironment().catch(console.error);
     }
 
-    async checkPythonEnvironment() {
+    /**
+     * Checks if the Python environment is properly configured with dart-sdk
+     * @throws {Error} If Python environment check fails
+     */
+    async checkPythonEnvironment(): Promise<void> {
         const command = `import sys
 import os
 import traceback
@@ -60,8 +77,8 @@ except Exception as e:
     sys.exit(1)`;
 
         try {
-            // Use pyenv Python
-            const pythonPath = '/Users/speed/.pyenv/shims/python';
+            // Use configured Python path or fallback to system Python
+            const pythonPath = process.env.PYTHON_PATH || 'python3';
             console.error('[Debug] Running environment check with:', pythonPath);
             console.error('[Debug] Environment check command:', command);
 
@@ -120,10 +137,16 @@ except Exception as e:
         }
     }
 
-    async runDartCommand(args) {
+    /**
+     * Executes a Dart command via Python
+     * @param args - Python code to execute within the Dart context
+     * @returns {Promise<string>} The output from the Python command
+     * @throws {Error} If command execution fails
+     */
+    async runDartCommand(args: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            // Use pyenv Python
-            const pythonPath = '/Users/speed/.pyenv/shims/python';
+            // Use configured Python path or fallback to system Python
+            const pythonPath = process.env.PYTHON_PATH || 'python3';
             console.error('[Debug] Running Python command with:', pythonPath);
             
             const command = `import sys
@@ -226,7 +249,10 @@ except Exception as e:
         });
     }
 
-    setupToolHandlers() {
+    /**
+     * Sets up MCP tool request handlers for Dart operations
+     */
+    setupToolHandlers(): void {
         this.server.setRequestHandler(ListToolsRequestSchema, async () => {
             console.error('[Debug] Handling listTools request');
             const tools = [
@@ -1172,7 +1198,10 @@ else:
         });
     }
 
-    async start() {
+    /**
+     * Starts the MCP server with stdio transport
+     */
+    async start(): Promise<void> {
         const transport = new StdioServerTransport();
         await this.server.connect(transport);
         console.error('Dart MCP server running on stdio');
